@@ -1,0 +1,27 @@
+start: cdecls module
+
+cdecls: (cimport)+
+
+module: (statement)+
+
+cimport: "cimport" STRING "as" NAME
+       | "cimport" STRING "(" NAME ("," NAME)* ")"
+
+decl:
+
+statement: call
+
+call: NAME "(" _cs_list{expr} ")"
+
+expr: atom
+
+
+atom: STRING
+    | NUMBER
+
+
+NUMBER: DEC_NUMBER|HEX_NUMBER|OCT_NUMBER|BIN_NUMBER|FLOAT_NUMBER|IMAG_NUMBER
+STRING: /"(?:[^\\\\\n]|\\\\.)*"/s
+
+%ignore /\s+/
+%import python (NAME, DEC_NUMBER, HEX_NUMBER, OCT_NUMBER, BIN_NUMBER, FLOAT_NUMBER, IMAG_NUMBER, cs_list, _cs_list)
