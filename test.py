@@ -1,9 +1,17 @@
+import json
+from pprint import pprint
+import pyparsing
+
 from compiler import compile
 
 TEST_SCRIPT = r"""
-cimport "stdlib" (printf)
+cimport "stdio.h" (printf)
 
-printf("%s", "Hello World")
+printf("%s\n", "Hello World")
 """
 
-compile(TEST_SCRIPT)
+code = compile(TEST_SCRIPT)
+
+pprint(code)
+
+json.dump(code.to_json(), open("test.code.json", "w"))

@@ -4,24 +4,24 @@ cdecls: (cimport)+
 
 module: (statement)+
 
-cimport: "cimport" STRING "as" NAME
-       | "cimport" STRING "(" NAME ("," NAME)* ")"
+cimport: "cimport" STRING "as" NAME -> cimport_alias
+       | "cimport" STRING "(" NAME ("," NAME)* ")" -> cimport_list
 
 decl:
 
-statement: call
+?statement: call
 
 call: NAME "(" _cs_list{expr} ")"
 
-expr: atom
+?expr: atom
 
 
-atom: STRING
-    | NUMBER
+atom: STRING -> string
+    | NUMBER -> number
 
 
 NUMBER: DEC_NUMBER|HEX_NUMBER|OCT_NUMBER|BIN_NUMBER|FLOAT_NUMBER|IMAG_NUMBER
-STRING: /"(?:[^\\\\\n]|\\\\.)*"/s
+STRING: /"(?:[^\\\n"]|\\.)*"/s
 
 %ignore /\s+/
 %import python (NAME, DEC_NUMBER, HEX_NUMBER, OCT_NUMBER, BIN_NUMBER, FLOAT_NUMBER, IMAG_NUMBER, cs_list, _cs_list)
